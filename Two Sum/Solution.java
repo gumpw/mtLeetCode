@@ -22,7 +22,7 @@ public class Solution {
         for(int offset=0;offset<pos.length;offset++){
             pos[offset] = offset+1;
         }
-        sort(nums,pos);
+        bubbleUp(nums, pos);
         int[] resultArray = new int[2];
         for(int offset=0;offset<nums.length;offset++){
             int firstNum = nums[offset];
@@ -30,8 +30,11 @@ public class Solution {
                int secondNum = nums[offset2];
                 int calc = firstNum+secondNum;
                if(calc==target){
-                    resultArray[0] = pos[offset];
-                    resultArray[1] = pos[offset2];
+                   if(pos[offset]>pos[offset2]) {
+                       return new int[]{pos[offset2], pos[offset]};
+                   }else{
+                       return new int[]{pos[offset], pos[offset2]};
+                   }
                }else if(calc>target){
                    //跳出内层循环
                    break;
@@ -42,14 +45,93 @@ public class Solution {
     }
 
     /**
-     * 对nums进行从小到大排序，pos做相应调整
+     * Method1:java实现快速排序
      * @param nums
      * @param pos
      */
     private void sort(int[] nums,int[] pos){
-
+        
 
     }
 
+    /**
+     * Method2:不排序，用多层存储多位置
+     * @param nums
+     * @param target
+     */
+    private int[] noneSort(int[] nums, int target){
+        Map<Integer,List<Integer>> hashMap = new HashMap<Integer, List<Integer>>(nums.length*3/2);
+        for(int pos=0;pos<nums.length;pos++){
+            List<Integer> dataList = hashMap.get(nums[pos]);
+            if(dataList==null){
+                dataList = new ArrayList<Integer>(3);
+                dataList.add(pos+1);
+                hashMap.put(nums[pos],dataList);
+            }else{
+                dataList.add(pos+1);
+            }
+        }
+
+        for(int origin : nums){
+            int search = target-origin;
+            if(hashMap.get(search)!=null) {
+                int[] retArr = null;
+                if (search == origin) {
+                    if(hashMap.get(search).size()==1){
+                        continue;
+                    }
+                    retArr =new int[]{hashMap.get(search).get(0), hashMap.get(search).get(1)};
+                } else {
+                    retArr =new int[]{hashMap.get(origin).get(0), hashMap.get(search).get(0)};
+                }
+                Arrays.sort(retArr);
+                return retArr;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 冒泡排序
+     * @param nums
+     * @param pos
+     */
+    private void bubbleUp(int[] nums,int[] pos){
+        for(int off=nums.length-1;off>=0;off--){
+            for(int comp=nums.length-1;comp>=nums.length-off;comp--){
+                if(nums[comp]<nums[comp-1]){
+                    exchange(nums,comp,comp-1);
+                    exchange(pos,comp,comp-1);
+                }
+            }
+        }
+        
+    }
+
+    private void exchange(int[] arr,int pos1,int pos2){
+        int temp = arr[pos1];
+        arr[pos1] = arr[pos2];
+        arr[pos2] = temp;
+    }
+
+
+    public static void main(String[] args) {
+//        int[] num = {3,4,0,7,5};
+//        int[] pos = {1,2,3,4,5};
+//        new Solution().bubbleUp(num,pos);
+//        for(int i:num)
+//        System.out.print(i + ";");
+//        for(int b:pos){
+//            System.out.print(b +",");
+//        }
+
+        int [] num = {0,4,3,0,3};
+        int[] ret = new Solution().noneSort(num, 0);
+        for(int bb : ret){
+            System.out.println(bb);
+        }
+
+    }
 
 }
