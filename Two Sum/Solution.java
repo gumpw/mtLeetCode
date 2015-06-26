@@ -10,7 +10,7 @@ import java.util.*;
  Input: numbers={2, 7, 11, 15}, target=9
  Output: index1=1, index2=2.</p>
 
-    <p>肯定是先排序,后查找</p>
+    <p>肯定是先排序,后查找</p>Fixme:思路有问题
  *
  * @author Magic Joey
  * @version Solution.java 1.0 Created@2015-06-24 08:22 $
@@ -23,39 +23,37 @@ public class Solution {
             pos[offset] = offset+1;
         }
         bubbleUp(nums, pos);
-        int[] resultArray = new int[2];
         for(int offset=0;offset<nums.length;offset++){
             int firstNum = nums[offset];
             for(int offset2=offset+1;offset2<nums.length;offset2++){
-               int secondNum = nums[offset2];
-                int calc = firstNum+secondNum;
+               int calc = firstNum+nums[offset2];
                if(calc==target){
-                   if(pos[offset]>pos[offset2]) {
-                       return new int[]{pos[offset2], pos[offset]};
-                   }else{
-                       return new int[]{pos[offset], pos[offset2]};
-                   }
+                   int[] arr = new int[]{pos[offset2], pos[offset]};
+                   Arrays.sort(arr);
+                   return arr;
                }else if(calc>target){
                    //跳出内层循环
                    break;
                }
             }
         }
-        return  resultArray;
+        return  null;
     }
 
     /**
-     * Method1:java实现快速排序
+     * Method1:快速排序
+     *
      * @param nums
      * @param pos
      */
-    private void sort(int[] nums,int[] pos){
+    private void fastSort(int[] nums,int[] pos){
         
 
     }
 
     /**
      * Method2:不排序，用多层存储多位置
+     * 时间复杂度:O(n)
      * @param nums
      * @param target
      */
@@ -93,7 +91,8 @@ public class Solution {
     }
 
     /**
-     * 冒泡排序
+     * Method3:冒泡排序
+     * 时间复杂度:O(n2)
      * @param nums
      * @param pos
      */

@@ -13,6 +13,9 @@ import java.util.Map;
  * 从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串;
  * 每个节点的所有子节点包含的字符都不相同。
  *
+ * o-a
+ * |\
+ * c b
  * @author Magic Joey
  * @version Trie.java 1.0 @2015/6/23 17:37 $
  */
