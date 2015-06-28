@@ -45,7 +45,7 @@ public class Solution {
     }
 
     /**
-     * 不使用字符串，速度比字符串要慢
+     * 不使用字符串，速度比前两种慢
      * @param x
      * @return
      */
