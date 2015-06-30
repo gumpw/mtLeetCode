@@ -44,43 +44,53 @@ public class Solution {
 
 
     public List<List<Integer>> threeSum(int[] nums) {
-        if (nums == null || nums.length < 3) {
-            return null;
-        }
         List<List<Integer>> resList = new ArrayList<List<Integer>>();
-        //初始化
-        Map<Integer,Integer> occurance = new HashMap<Integer,Integer>();
-        Map<Integer,List<Integer>> occurMapping = new HashMap<Integer,List<Integer>>();
-        occurMapping.put(1,new ArrayList<Integer>());
-        occurMapping.put(2,new ArrayList<Integer>());
-        occurMapping.put(3,new ArrayList<Integer>());
-        for(int n : nums){
-            if(occurance.get(n)==null){
-                occurance.put(n,1);
-            }else{
-                occurance.put(n,1+occurance.get(n));
-            }
+        if (nums == null || nums.length < 3) {
+            return resList;
         }
-        for(int key : occurance.keySet()){
-            if(occurance.get(key)==1){
-                occurMapping.get(1).add(key);
-            }else if(key==0 && occurance.get(key)>=3){
-                occurMapping.get(3).add(key);
-            }else{
-                occurMapping.get(2).add(key);
+        Arrays.sort(nums);
+        int offset = 0, ending = nums.length - 1;
+        while( offset < ending ){
+            int num0 = nums[offset], pos1 = offset + 1, pos2 = ending;
+            while(pos1<pos2){
+                int num1 = nums[pos1], num2 = nums[pos2], sum = num0 + num1 + num2;
+                if(sum==0) {
+                    List<Integer> integerList = Arrays.asList(num0,nums[pos1],nums[pos2]);
+                    Collections.sort(integerList);
+                    resList.add(integerList);
+                }
+                if (sum <= 0) while (nums[pos1] == num1 && pos1 < pos2) pos1++;
+                if (sum >= 0) while (nums[pos2] == num2 && pos1 < pos2) pos2--;
             }
+            offset ++ ;
         }
-
-
-
-
         return resList;
     }
 
 
+//    public List<List<Integer>> threeSum(int[] nums) {
+//        List<List<Integer>> triples = new ArrayList();
+//        Arrays.sort(nums);
+//        int i = 0, last = nums.length - 1;
+//        while (i < last) {
+//            int a = nums[i], j = i+1, k = last;
+//            while (j < k) {
+//                int b = nums[j], c = nums[k], sum = a+b+c;
+//                if (sum == 0) triples.add(Arrays.asList(a, b, c));
+//                if (sum <= 0) while (nums[j] == b && j < k) j++;
+//                if (sum >= 0) while (nums[k] == c && j < k) k--;
+//            }
+//            while (nums[i] == a && i < last) i++;
+//        }
+//        return triples;
+//    }
+
+
     public static void main(String[] args) {
-        int[] nums = {-1,0,1,2,-1,-4};
+        long millis = System.currentTimeMillis();
+        int[] nums = {7,-1,14,-12,-8,7,2,-15,8,8,-8,-14,-4,-5,7,9,11,-4,-15,-6,1,-14,4,3,10,-5,2,1,6,11,2,-2,-5,-7,-6,2,-15,11,-6,8,-4,2,1,-1,4,-6,-15,1,5,-15,10,14,9,-8,-6,4,-6,11,12,-15,7,-1,-9,9,-1,0,-4,-1,-12,-2,14,-9,7,0,-3,-4,1,-2,12,14,-10,0,5,14,-1,14,3,8,10,-8,8,-5,-2,6,-11,12,13,-7,-12,8,6,-13,14,-2,-5,-11,1,3,-6};//
         System.out.println(new Solution().threeSum(nums));
+        System.out.println(System.currentTimeMillis()-millis);
     }
 
 }
